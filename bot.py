@@ -155,12 +155,23 @@ def ticketSelector(driver, ticket_time, sleep=True):
     # date_number = driver.find_element(By.XPATH, "//tr[contains(@data-hourminute='1630')]/td[contains(@class='text-left')]//a[contains(@class='class='btn select-btn btn-seat-layout')]")
     # date_number.click()
 
+def solveCaptcha(driver, sleep=True):
+    #Add Human Response Time
+    sleeptime = 0
+    if sleep:
+        sleeptime=1
+
+    print("Waiting for Captcha to be solved...")
 
 def main():
     service = Service(executable_path="/opt/homebrew/bin/chromedriver")
     driver = webdriver.Chrome(service=service)
 
     driver.get("https://shuttleonline.ktmb.com.my/Home/Shuttle")
+
+    dates = [("20","07:00")]
+    month = 6
+    direction = "Go"
 
     # loginAccount(driver=driver, username=username, password=password, sleep=False)
 
@@ -169,6 +180,9 @@ def main():
 
     #Select Ticket
     ticketSelector(driver=driver, ticket_time=ticket_time, sleep=False)
+
+    #Wait for Captcha
+    solveCaptcha(driver=driver, sleep=False)
     print("---Done Executing---")
     time.sleep(10)
 
