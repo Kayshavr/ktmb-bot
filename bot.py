@@ -1,5 +1,10 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
 import time
 
 def loginAccount(driver, username, password, sleep=True):
@@ -180,6 +185,109 @@ def selectPassenger(driver, passengerName, passengerPassport, passengerPassportE
     #Select Passenger
     passenger_checkbox = driver.find_element(By.XPATH, "//*[@id='Passengers_0__IsAddFavorite']")
     passenger_checkbox.click()
+    
+    #Name
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.ID, "Passengers_0__FullName"))
+    )
+    passenger_name_box = driver.find_element(By.ID, "Passengers_0__FullName")
+    passenger_name_box.clear()
+    passenger_name_box.send_keys(passengerName)
+    time.sleep(sleeptime)
+
+    #Passport
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.ID, "Passengers_0__PassportNo"))
+    )
+    passenger_passport_box = driver.find_element(By.ID, "Passengers_0__PassportNo")
+    passenger_passport_box.clear()
+    passenger_passport_box.send_keys(passengerPassport)
+    time.sleep(sleeptime)
+
+    #PassportExp [Hardcode - 15 Oct 2026]
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.ID, "Passengers_0__PassportExpiryDate"))
+    )
+    passenger_passport_exp_box = driver.find_element(By.ID, "Passengers_0__PassportExpiryDate").click()
+
+    for x in range(0,29):
+        WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "/html/body/section/div/div[1]/section/header/div[2]/button[2]"))
+        )
+        passenger_passport_exp_box_next = driver.find_element(By.XPATH, "/html/body/section/div/div[1]/section/header/div[2]/button[2]")
+        passenger_passport_exp_box_next.click()
+    time.sleep(sleeptime)
+
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, "//*[contains(@class,'lightpick__day') and text()='15']"))
+    )
+    date_number = driver.find_element(By.XPATH, "//*[contains(@class,'lightpick__day') and text()='15']")
+    date_number.click()
+    time.sleep(sleeptime)
+
+    # #PassportExp [Hardcode - 28 Sep 2027]
+    # WebDriverWait(driver, 30).until(
+    #     EC.presence_of_element_located((By.ID, "Passengers_0__PassportExpiryDate"))
+    # )
+    # passenger_passport_exp_box = driver.find_element(By.ID, "Passengers_0__PassportExpiryDate").click()
+
+    # for x in range(0,40):
+    #     WebDriverWait(driver, 30).until(
+    #         EC.presence_of_element_located((By.XPATH, "/html/body/section/div/div[1]/section/header/div[2]/button[2]"))
+    #     )
+    #     passenger_passport_exp_box_next = driver.find_element(By.XPATH, "/html/body/section/div/div[1]/section/header/div[2]/button[2]")
+    #     passenger_passport_exp_box_next.click()
+    # time.sleep(sleeptime)
+
+    # WebDriverWait(driver, 30).until(
+    #     EC.presence_of_element_located((By.XPATH, "//*[contains(@class,'lightpick__day') and text()='28']"))
+    # )
+    # date_number = driver.find_element(By.XPATH, "//*[contains(@class,'lightpick__day') and text()='28']")
+    # date_number.click()
+    # time.sleep(sleeptime)
+
+    #Contact Number
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.ID, "Passengers_0__ContactNo"))
+    )
+    passenger_contact_box = driver.find_element(By.ID, "Passengers_0__ContactNo")
+    passenger_contact_box.clear()
+    passenger_contact_box.send_keys(passengerContact)
+    time.sleep(sleeptime)
+
+    #Gender
+    if passengerGender=="Female":
+        WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.ID, "Passengers_0__GenderFemale"))
+        )
+        passenger_name_box = driver.find_element(By.ID, "Passengers_0__GenderFemale")
+        passenger_name_box.click()
+        time.sleep(sleeptime)
+    else:
+        WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.ID, "Passengers_0__GenderMale"))
+        )
+        passenger_name_box = driver.find_element(By.ID, "Passengers_0__GenderMale")
+        passenger_name_box.click()
+        time.sleep(sleeptime)
+
+    #Ticket Type
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.ID, "Passengers_0__FullName"))
+    )
+    ticket_type_box = driver.find_element(By.ID, "Passengers_0__TicketTypeId")
+    ticket_type_box.click()
+    ticket_type_option = driver.find_element(By.XPATH, "//*[@id='Passengers_0__TicketTypeId']/option[2]")
+    ticket_type_option.click()
+    
+    time.sleep(sleeptime)
+
+    #Proceed to Payment
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, "/html/body/form[1]/div[2]/div[2]/div[2]/div/div[2]/button[2]"))
+    )
+    proceed_button = driver.find_element(By.XPATH, "/html/body/form[1]/div[2]/div[2]/div[2]/div/div[2]/button[2]")
+    proceed_button.click()
 
 def main():
     service = Service(executable_path="/opt/homebrew/bin/chromedriver")
