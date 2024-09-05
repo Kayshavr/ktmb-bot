@@ -168,6 +168,18 @@ def solveCaptcha(driver, sleep=True):
         EC.presence_of_element_located((By.ID, "Passengers_0__FullName"))
     )
 
+def selectPassenger(driver, passengerName, passengerPassport, passengerPassportExp, 
+                    passengerContact, passengerGender, sleep=True):
+    #Add Human Response Time
+    sleeptime = 0
+    if sleep:
+        sleeptime=1
+
+    print("Selecting Passenger...")
+
+    #Select Passenger
+    passenger_checkbox = driver.find_element(By.XPATH, "//*[@id='Passengers_0__IsAddFavorite']")
+    passenger_checkbox.click()
 
 def main():
     service = Service(executable_path="/opt/homebrew/bin/chromedriver")
@@ -189,6 +201,12 @@ def main():
 
     #Wait for Captcha
     solveCaptcha(driver=driver, sleep=False)
+
+    #Select Passenger
+    selectPassenger(driver=driver, passengerName=passengerName, passengerPassport=passengerPassport, passengerPassportExp=passengerPassportExp, 
+                            passengerContact=passengerContact, passengerGender=passengerGender, sleep=False)
+            
+
     print("---Done Executing---")
     time.sleep(10)
 
