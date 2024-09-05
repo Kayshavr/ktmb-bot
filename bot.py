@@ -163,6 +163,12 @@ def solveCaptcha(driver, sleep=True):
 
     print("Waiting for Captcha to be solved...")
 
+    # wait for the user to click the submit button (check every 1s with a 1000s timeout)
+    WebDriverWait(driver, 100).until(
+        EC.presence_of_element_located((By.ID, "Passengers_0__FullName"))
+    )
+
+
 def main():
     service = Service(executable_path="/opt/homebrew/bin/chromedriver")
     driver = webdriver.Chrome(service=service)
