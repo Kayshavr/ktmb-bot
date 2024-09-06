@@ -289,6 +289,29 @@ def selectPassenger(driver, passengerName, passengerPassport, passengerPassportE
     proceed_button = driver.find_element(By.XPATH, "/html/body/form[1]/div[2]/div[2]/div[2]/div/div[2]/button[2]")
     proceed_button.click()
 
+def payment(driver, sleep=True):
+    #Add Human Response Time
+    sleeptime = 0
+    if sleep:
+        sleeptime=1
+
+    print("Making Payment...")
+
+    #Payment Option
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, "//*[@id='btnKtmbEWallet']"))
+    )
+    payment_option = driver.find_element(By.XPATH, "//*[@id='btnKtmbEWallet']")
+    payment_option.click()
+
+    #Back to Home Page
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, "/html/body/div[2]/div/div[2]/div[2]/div[6]/a[1]"))
+    )
+    back_to_home = driver.find_element(By.XPATH, "/html/body/div[2]/div/div[2]/div[2]/div[6]/a[1]")
+    back_to_home.click()
+
+
 def main():
     service = Service(executable_path="/opt/homebrew/bin/chromedriver")
     driver = webdriver.Chrome(service=service)
@@ -313,7 +336,9 @@ def main():
     #Select Passenger
     selectPassenger(driver=driver, passengerName=passengerName, passengerPassport=passengerPassport, passengerPassportExp=passengerPassportExp, 
                             passengerContact=passengerContact, passengerGender=passengerGender, sleep=False)
-            
+    
+    #Payment
+    payment(driver, sleep=False)
 
     print("---Done Executing---")
     time.sleep(10)
