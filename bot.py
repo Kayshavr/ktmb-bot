@@ -1,3 +1,4 @@
+#Botjen 1.0
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -6,6 +7,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 import time
+
+def set_viewport_size(driver, width, height):
+    window_size = driver.execute_script("""
+        return [window.outerWidth - window.innerWidth + arguments[0],
+          window.outerHeight - window.innerHeight + arguments[1]];
+        """, width, height)
+    driver.set_window_size(*window_size)
 
 def loginAccount(driver, username, password, sleep=True):
     #Add Human Response Time
@@ -288,7 +296,7 @@ def selectPassenger(driver, passengerName, passengerPassport, passengerPassportE
     )
     proceed_button = driver.find_element(By.XPATH, "/html/body/form[1]/div[2]/div[2]/div[2]/div/div[2]/button[2]")
     proceed_button.click()
-
+    
 def payment(driver, sleep=True):
     #Add Human Response Time
     sleeptime = 0
@@ -326,13 +334,12 @@ def switchDestination(driver, sleep=True):
     back_to_home = driver.find_element(By.XPATH, "//*[@id='theForm']/div/div[1]/i")
     back_to_home.click()
     
-
 def main():
     service = Service(executable_path="/opt/homebrew/bin/chromedriver")
     driver = webdriver.Chrome(service=service)
 
     driver.get("https://shuttleonline.ktmb.com.my/Home/Shuttle")
-
+    
     dates = [("20","07:00")]
     month = 6
     direction = "Go"
