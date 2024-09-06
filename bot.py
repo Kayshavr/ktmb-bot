@@ -311,6 +311,21 @@ def payment(driver, sleep=True):
     back_to_home = driver.find_element(By.XPATH, "/html/body/div[2]/div/div[2]/div[2]/div[6]/a[1]")
     back_to_home.click()
 
+def switchDestination(driver, sleep=True):
+    #Add Human Response Time
+    sleeptime = 0
+    if sleep:
+        sleeptime=1
+
+    print("Coming from Singapore...")
+
+    #Swap Destination
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, "//*[@id='theForm']/div/div[1]/i"))
+    )
+    back_to_home = driver.find_element(By.XPATH, "//*[@id='theForm']/div/div[1]/i")
+    back_to_home.click()
+    
 
 def main():
     service = Service(executable_path="/opt/homebrew/bin/chromedriver")
