@@ -322,24 +322,42 @@ def main():
     month = 6
     direction = "Go"
 
-    # loginAccount(driver=driver, username=username, password=password, sleep=False)
+    loginAccount(driver=driver, username=username, password=password, sleep=False)
 
-    #Select Date
-    dateSelector(driver=driver, date=ticket_date, month=month, sleep=False)
+    for tuple in dates:
+        try:
+            ticket_date = tuple[0]
+            ticket_time = tuple[1]
+            print("Getting Ticket for Date: "+str(ticket_date)+" at "+str(ticket_time)+"")
 
-    #Select Ticket
-    ticketSelector(driver=driver, ticket_time=ticket_time, sleep=False)
+            #Switch Destinations
+            if direction == "Come":
+                switchDestination(driver=driver, sleep=False)
+            else:
+                print("Going to Singapore...")
 
-    #Wait for Captcha
-    solveCaptcha(driver=driver, sleep=False)
+            #Select Date
+            dateSelector(driver=driver, date=ticket_date, month=month, sleep=False)
 
-    #Select Passenger
-    selectPassenger(driver=driver, passengerName=passengerName, passengerPassport=passengerPassport, passengerPassportExp=passengerPassportExp, 
+            #Refresh
+
+            #Select Ticket
+            ticketSelector(driver=driver, ticket_time=ticket_time, sleep=False)
+
+            #Wait for Captcha
+            solveCaptcha(driver=driver, sleep=False)
+
+            #Select Passenger
+            selectPassenger(driver=driver, passengerName=passengerName, passengerPassport=passengerPassport, passengerPassportExp=passengerPassportExp, 
                             passengerContact=passengerContact, passengerGender=passengerGender, sleep=False)
-    
-    #Payment
-    payment(driver, sleep=False)
+            #Payment
+            payment(driver, sleep=False)
 
+        except:
+            print("Error Buying Ticket for Date: "+str(ticket_date)+" at "+str(ticket_time)+"")
+            driver.get("https://shuttleonline.ktmb.com.my/Home/Shuttle")
+
+    #Done
     print("---Done Executing---")
     time.sleep(10)
 
